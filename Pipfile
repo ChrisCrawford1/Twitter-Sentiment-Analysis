@@ -12,6 +12,7 @@ python-dotenv = "*"
 textblob = "*"
 pandas = "*"
 numpy = "*"
+progress = "*"
 
 [requires]
 python_version = "3.7"

@@ -1,7 +1,7 @@
 from textblob import TextBlob
+from progress.bar import IncrementalBar
 import pandas as pd
 import numpy as np
-import math
 
 class TweetStatistics:
 
@@ -15,12 +15,16 @@ class TweetStatistics:
         self.tweet_count = tweet_count
 
     def get_statistics(self):
+        bar = IncrementalBar('Analyzing', max=self.tweet_count, suffix='%(percent)d%%')
+        
         for tweet in self.tweets:
             blob = TextBlob(tweet.text)
-            self.subjectivity += blob.sentiment.subjectivity
             # print(tweet.created_at)
+            self.subjectivity += blob.sentiment.subjectivity
             self.rate_polarity(blob.sentiment.polarity)
+            bar.next()
 
+        bar.finish()
         self.print_output()
 
     def rate_polarity(self, polarity):

@@ -8,7 +8,7 @@ class GetTweets:
         self.auth.set_access_token(twitter_credentials.ACCESS_TOKEN_KEY, twitter_credentials.ACCESS_SECRET_KEY)
         self.api = tweepy.API(self.auth)
         self.user_input = ""
-        self.number_of_tweets = 0
+        self.tweet_count = 0
 
 
     def get_search_term(self):
@@ -16,14 +16,11 @@ class GetTweets:
         return self.user_input
 
     def get_number_of_tweets(self):
-        self.number_of_tweets = int(input("How many tweets to sample - "))
-        return self.number_of_tweets
+        self.tweet_count = int(input("How many tweets to sample - "))
+        return self.tweet_count
 
     def run_search(self):
         tweets = tweepy.Cursor(self.api.search, q=self.get_search_term()).items(self.get_number_of_tweets())
-        process_stats = TweetStatistics(tweets)
-        stats = process_stats.get_statistics()
-
-        print("{} tweets with #{} | {} were positive and {} were negative and {} were neutral"
-            .format(self.number_of_tweets, self.user_input, stats["positive"], stats["neutral"], stats["negative"]))
+        process_stats = TweetStatistics(tweets, self.user_input, self.tweet_count)
+        process_stats.get_statistics()
 
